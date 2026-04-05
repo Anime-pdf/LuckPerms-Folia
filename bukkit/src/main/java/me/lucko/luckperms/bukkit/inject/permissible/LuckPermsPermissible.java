@@ -244,10 +244,18 @@ public class LuckPermsPermissible extends PermissibleBase {
         }
 
         LuckPermsPermissionAttachment attachment = addAttachment(plugin);
-        if (getPlugin().getBootstrap().getServer().getScheduler().scheduleSyncDelayedTask(plugin, attachment::remove, ticks) == -1) {
-            attachment.remove();
-            throw new RuntimeException("Could not add PermissionAttachment to " + this.player + " for plugin " + plugin.getDescription().getFullName() + ": Scheduler returned -1");
+        if (getPlugin().getBootstrap().isFolia()) {
+            if (player.getScheduler().runDelayed(plugin, (task) -> attachment.remove(), null, ticks) == null) {
+                attachment.remove();
+                throw new RuntimeException("Could not add PermissionAttachment to " + this.player + " for plugin " + plugin.getDescription().getFullName() + ": Scheduler returned -1");
+            }
+        } else {
+            if (getPlugin().getBootstrap().getServer().getScheduler().scheduleSyncDelayedTask(plugin, attachment::remove, ticks) == -1) {
+                attachment.remove();
+                throw new RuntimeException("Could not add PermissionAttachment to " + this.player + " for plugin " + plugin.getDescription().getFullName() + ": Scheduler returned -1");
+            }
         }
+
         return attachment;
     }
 
