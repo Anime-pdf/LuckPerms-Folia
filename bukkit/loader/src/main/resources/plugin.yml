@@ -23,6 +23,8 @@ loadbefore: [Vault]
 # Soft depend on ViaVersion for adventure protocol facet
 softdepend: [LilyPad-Connect, ViaVersion]
 
+folia-supported: true
+
 commands:
   luckperms:
     description: Manage permissions

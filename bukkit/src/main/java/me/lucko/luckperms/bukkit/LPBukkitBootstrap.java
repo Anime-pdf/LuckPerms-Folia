@@ -104,7 +104,7 @@ public class LPBukkitBootstrap implements LuckPermsBootstrap, LoaderBootstrap, B
 
         boolean foliaSupported;
         try {
-            Class.forName("io.papermc.paper.threadedregionscheduling.RegionScheduler");
+            Class.forName("io.papermc.paper.threadedregions.RegionizedServer");
             foliaSupported = true;
         } catch (ClassNotFoundException e) {
             foliaSupported = false;
@@ -193,7 +193,7 @@ public class LPBukkitBootstrap implements LuckPermsBootstrap, LoaderBootstrap, B
             this.plugin.enable();
 
             // schedule a task to update the 'serverStarting' flag
-            getServer().getScheduler().runTask(this.loader, () -> this.serverStarting = false);
+            getScheduler().executeSync(() -> this.serverStarting = false);
         } finally {
             this.enableLatch.countDown();
         }
